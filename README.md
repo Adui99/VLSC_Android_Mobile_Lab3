@@ -42,5 +42,5 @@ Lab3aStudentList/
 
 ## Ảnh minh chứng
 
-![Ảnh minh chứng](<img width="1920" height="994" alt="image" src="https://github.com/user-attachments/assets/bcfcc9e5-f933-48ce-badd-24cfabe9cb4b" />
-)
+<img width="1920" height="994" alt="image" src="https://github.com/user-attachments/assets/e424e849-c591-4a7b-a886-2447b938c66d" />
+
