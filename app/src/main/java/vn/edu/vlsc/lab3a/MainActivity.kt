@@ -1,6 +1,7 @@
 package vn.edu.vlsc.lab3a
+
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -9,9 +10,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import vn.edu.vlsc.lab3a.adapter.StudentAdapter
 import vn.edu.vlsc.lab3a.databinding.ActivityMainBinding
 import vn.edu.vlsc.lab3a.model.Student
+
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val studentAdapter = StudentAdapter { student -> showStudentToast(student) }
+
+    // Phức tạp không gian: O(M) với M = Kích thước block data Student
+    private val studentAdapter = StudentAdapter { student ->
+        val intent = Intent(this@MainActivity, DetailActivity::class.java).apply {
+            // Ghi dữ liệu vào Bundle
+            putExtra(DetailActivity.EXTRA_STUDENT, student)
+        }
+        startActivity(intent) // Kích hoạt luồng IPC
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -21,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         setupRecyclerView()
         studentAdapter.submitList(getSampleStudents())
     }
+
     private fun applyWindowInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val types = WindowInsetsCompat.Type.systemBars() or
@@ -30,6 +42,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
     }
+
     private fun setupRecyclerView() {
         binding.rvStudents.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -37,13 +50,7 @@ class MainActivity : AppCompatActivity() {
             setHasFixedSize(true)
         }
     }
-    private fun showStudentToast(student: Student) {
-        Toast.makeText(
-            this,
-            getString(R.string.student_selected, student.name, student.mssv),
-            Toast.LENGTH_SHORT
-        ).show()
-    }
+
     private fun getSampleStudents(): List<Student> {
         val avatar = R.mipmap.ic_launcher_round
         return listOf(
